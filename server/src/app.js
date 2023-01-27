@@ -20,7 +20,7 @@ app.use(express.static(join(__dirname, "..", "public")));
 
 app.use(appRouter);
 
-app.get("/", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(join(__dirname, "..", "public", "index.html"));
 });
 
