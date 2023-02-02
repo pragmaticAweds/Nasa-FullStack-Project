@@ -8,5 +8,5 @@ describe("Test Get Launches", () => {
 describe("Test Post Launches", () => {
   test("It should resppond with 201 success", () => {});
   test("It should catch missing required property", () => {});
-  test("It should catch invalid date", () => {});
+  test("It should catch invalid dates", () => {});
 });
