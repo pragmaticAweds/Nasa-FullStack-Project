@@ -1,6 +1,6 @@
 //Using the createReadStream function from filesystem node module to read the csv file
 const { createReadStream } = require("fs");
-const { join, resolve } = require("path");
+const { join } = require("path");
 
 const { parse } = require("csv-parse");
 
@@ -47,7 +47,11 @@ function loadPlanetsData() {
   });
 }
 
+function planetsData() {
+  return habitablePlanet;
+}
+
 module.exports = {
   loadPlanetsData,
-  planets: habitablePlanet,
+  planetsData,
 };

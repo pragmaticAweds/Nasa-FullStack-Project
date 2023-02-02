@@ -1,8 +1,15 @@
 const express = require("express");
 const launchesRouter = express.Router();
 
-const { getAllLaunches } = require("./launches.controller");
+const {
+  getAllLaunches,
+  createNewLaunch,
+  deleteLaunch,
+} = require("./launches.controller");
 
-launchesRouter.get("/", getAllLaunches);
+launchesRouter
+  .get("/", getAllLaunches)
+  .post("/", createNewLaunch)
+  .delete("/:id", deleteLaunch);
 
 module.exports = launchesRouter;
