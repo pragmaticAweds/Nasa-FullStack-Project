@@ -1,11 +1,11 @@
 const { planetsData } = require("./planets.model");
 
-function getAllPlanets(req, res) {
-  return res.status(200).json(planetsData());
+async function getAllPlanets(req, res) {
+  return res.status(200).json(await planetsData());
 }
 
 module.exports = {
   getAllPlanets,
 };
 
-console.log(planetsData());
+// console.log(planetsData());

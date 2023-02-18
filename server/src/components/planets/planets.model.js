@@ -4,8 +4,10 @@ const { join } = require("path");
 
 const { parse } = require("csv-parse");
 
+const Planet = require("./planets.mongo");
+
 // habitablePlanet variable to store our data
-const habitablePlanet = [];
+// const habitablePlanet = [];
 
 //
 
@@ -30,9 +32,9 @@ function loadPlanetsData() {
         })
       )
 
-      .on("data", (chunk) => {
-        if (isHabitablePlanet(chunk)) {
-          habitablePlanet.push(chunk);
+      .on("data", async (data) => {
+        if (isHabitablePlanet(data)) {
+          await savePlanet(data);
         }
       })
 
@@ -41,14 +43,28 @@ function loadPlanetsData() {
         reject(err);
       })
 
-      .on("end", () => {
+      .on("end", async () => {
+        const countPlanetsData = (await planetsData()).length;
+        console.log(`${countPlanetsData} habitable planets found!`);
         resolve();
       });
   });
 }
 
-function planetsData() {
-  return habitablePlanet;
+async function savePlanet(planet) {
+  try {
+    await Planet.updateOne(
+      { keplerName: planet.kepler_name },
+      { keplerName: planet.kepler_name },
+      { upsert: true }
+    );
+  } catch (err) {
+    console.error(`Could not save planet ${err}`);
+  }
+}
+
+async function planetsData() {
+  return await Planet.find({});
 }
 
 module.exports = {
