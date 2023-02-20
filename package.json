@@ -1,7 +1,7 @@
 {
   "name": "nasa-fs-project",
   "version": "1.0.0",
-  "description": "",
+  "description": "nasa fs project",
   "main": "index.js",
   "scripts": {
     "install-server": "npm install --prefix server",
