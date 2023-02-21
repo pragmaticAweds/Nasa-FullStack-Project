@@ -1,15 +1,15 @@
 const {
   launchesData,
-  addLaunch,
+  scheduleNewLaunch,
   checkLaunchId,
   abortLaunchById,
 } = require("./launches.model");
 
-function getAllLaunches(req, res) {
-  return res.status(200).json(launchesData());
+async function getAllLaunches(req, res) {
+  return res.status(200).json(await launchesData());
 }
 
-function createNewLaunch(req, res) {
+async function createNewLaunch(req, res) {
   let launch = req.body;
 
   //validate if fields are not empty
@@ -28,7 +28,7 @@ function createNewLaunch(req, res) {
   if (isNaN(launch.launchDate))
     return res.status(400).json({ error: "Invalid launch date" });
 
-  addLaunch(launch);
+  await scheduleNewLaunch(launch);
 
   return res.status(201).json(launch);
 }
