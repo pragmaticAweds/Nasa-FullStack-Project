@@ -16,9 +16,9 @@ const launch = {
   success: true,
 };
 
-let latestFlightNumber = 100;
+// let latestFlightNumber = 100;
 
-saveLaunch(launch);
+// saveLaunch(launch);
 
 launches.set(launch.flightNumber, launch);
 
@@ -36,8 +36,10 @@ async function getLatestFlightNumber() {
   return lastFlight.flightNumber;
 }
 
-function checkLaunchId(launchId) {
-  return launches.has(launchId);
+async function checkLaunchId(launchId) {
+  return await launchModel.findOne({
+    flightNumber: launchId,
+  });
 }
 
 async function saveLaunch(launch) {
@@ -47,12 +49,16 @@ async function saveLaunch(launch) {
     throw new Error("No matching planet found!");
   }
 
-  await launchModel.updateOne({ flightNumber: launch.flightNumber }, launch, {
-    upsert: true,
-  });
+  await launchModel.findOneAndUpdate(
+    { flightNumber: launch.flightNumber },
+    launch,
+    {
+      upsert: true,
+    }
+  );
 }
 
-async function scheduleNewLaunch() {
+async function scheduleNewLaunch(launch) {
   const newFlightNumber = (await getLatestFlightNumber()) + 1;
 
   const newLaunch = Object.assign(launch, {
@@ -65,10 +71,15 @@ async function scheduleNewLaunch() {
   await saveLaunch(newLaunch);
 }
 
-function abortLaunchById(launchId) {
-  const aborted = launches.get(launchId);
-  aborted.upcoming = false;
-  aborted.success = false;
+async function abortLaunchById(launchId) {
+  const aborted = launchModel.updateOne(
+    { flightNumber: launchId },
+    {
+      upcoming: false,
+      success: false,
+    }
+  );
+
   return aborted;
 }
 
