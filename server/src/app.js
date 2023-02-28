@@ -18,7 +18,7 @@ app.use(morgan("combined"));
 app.use(express.json());
 app.use(express.static(join(__dirname, "..", "public")));
 
-app.use(appRouter);
+app.use("/v1", appRouter);
 
 app.get("/*", (req, res) => {
   res.sendFile(join(__dirname, "..", "public", "index.html"));
