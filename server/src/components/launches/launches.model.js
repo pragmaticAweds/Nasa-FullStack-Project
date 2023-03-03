@@ -5,19 +5,12 @@ const launchModel = require("./launches.mongo");
 
 const DEFAULT_LAUNCH_NO = 100;
 
-const launch = {
-  flightNumber: 100, //flight_number
-  mission: "kepler Exploration X", //name
-  rocket: "Explorer IS1", //rocket.name
-  launchDate: new Date("December 27, 2030"), //date_local
-  target: "Kepler-442 b", //not applicable
-  customers: ["NASA", "ZTM"], //payload.customers for each customers
-  upcoming: true, //upcoming
-  success: true, //success
-};
-
-async function launchesData() {
-  return await launchModel.find({}, { _id: 0, __v: 0 });
+async function launchesData(skip, limit) {
+  return await launchModel
+    .find({}, { _id: 0, __v: 0 })
+    .sort({ flightNumber: 1 })
+    .skip(skip)
+    .limit(limit);
 }
 
 async function getLatestFlightNumber() {
